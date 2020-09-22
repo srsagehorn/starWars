@@ -81,7 +81,11 @@
       const $searchInput = $("#character-search");
 
       $searchBtn.on("click", function () {
-        const query = $searchInput.val().trim();
+        const query = $searchInput
+          .val()
+          .replace(/\s+/g, "")
+          .toLowerCase()
+          .trim();
         $.get(`/api/${query}`).then((response) => {
           if (response) {
             $("#stats").show();
