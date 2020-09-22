@@ -28,10 +28,12 @@ app.get("/add", (req, res) => {
   res.sendFile(path.join(__dirname, "add.html"));
 });
 
-app.post("/add", (req, res) => {
-  const newCharacters = req.body;
-  characterData.push(newCharacters);
-  res.json(newCharacters);
+app.post("/api/characters", (req, res) => {
+  const newCharacter = req.body;
+
+  newCharacter.route = newCharacter.name.replace(/\s+/g, "").toLowerCase();
+  characterData.push(newCharacter);
+  res.json(newCharacter);
   res.end();
 });
 
