@@ -22,9 +22,16 @@
         <h1>Star Wars Express</h1>
         <h3>The greatest resource in the galaxy for Star Wars statistics!</h3>
         <hr />
-        <button class="btn btn-danger btn-lg">
-          <span class="fa fa-plus"></span> Add New Character
-        </button>
+        <a href="/add">
+          <button class="btn btn-danger btn-lg">
+            <span class="fa fa-plus"></span> Add New Character
+          </button>
+        </a>
+        <a href="/api/characters">
+          <button class="btn btn-danger btn-lg">
+            <span class="fa fa-eye"></span> All Characters
+          </button></a
+        >
       </div>
       <div class="row">
         <div class="col-12">
@@ -71,28 +78,23 @@
     </div>
 
     <script type="text/javascript">
-      // QUESTION: What is this code doing?
-      $("#search-btn").on("click", function () {
-        var searchedCharacter = $("#character-search").val().trim();
+      const $searchBtn = $("#search-btn");
+      const $searchInput = $("#character-search");
 
-        // Using a RegEx Pattern to remove spaces from searchedCharacter
-        // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-        searchedCharacter = searchedCharacter.replace(/\s+/g, "").toLowerCase();
-
-        // QUESTION: What does $.get do? What are the parameters it is expecting?
-        $.get("/api/characters/" + searchedCharacter, function (data) {
-          console.log(data);
-          if (data) {
+      $searchBtn.on("click", function () {
+        const query = $searchInput.val().trim();
+        $.get(`/api/${query}`).then((response) => {
+          if (response) {
             $("#stats").show();
-            $("#name").text(data.name);
-            $("#role").text(data.role);
-            $("#age").text(data.age);
-            $("#force-points").text(data.forcePoints);
+            $("#name").text(response.name);
+            $("#role").text(response.role);
+            $("#age").text(response.age);
+            $("#force-points").text(response.forcePoints);
           } else {
-            $("#name").text(
-              "The force is not strong with this one. Your character was not found."
-            );
             $("#stats").hide();
+            $("#name").text(
+              "The force is not strong with this one. Your character was not found"
+            );
           }
         });
       });
